@@ -82,7 +82,6 @@ dependencies {
 
 
 apply {
-    // from("$projectDir/../config/android-checkstyle.gradle")
     from("$projectDir/../config/source-archive.gradle")
     from("$projectDir/../config/android-maven-publication.gradle")
 }

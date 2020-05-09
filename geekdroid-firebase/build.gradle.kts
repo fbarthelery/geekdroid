@@ -8,7 +8,8 @@ plugins {
     `maven-publish`
 }
 
-val artifactId by extra(name)
+val archivesBaseName by extra("geekdroid-firebase")
+val artifactId by extra (archivesBaseName)
 
 android {
     val compileSdkVersion: String by rootProject.extra
@@ -61,4 +62,9 @@ dependencies {
     // depends on new version
     implementation("org.checkerframework:checker-compat-qual:2.5.5")
     implementation("com.google.guava:guava:27.0.1-android")
+}
+
+apply {
+    from("$projectDir/../config/source-archive.gradle")
+    from("$projectDir/../config/android-maven-publication.gradle")
 }
