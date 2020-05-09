@@ -37,11 +37,14 @@ fun Project.configureAnnotationProcessorDeps() {
         configurations.whenObjectAdded {
             when (name) {
                 "kapt" -> {
-                    add(name,"javax.xml.bind:jaxb-api:2.3.1")
+                    add(name, "javax.xml.bind:jaxb-api:2.3.1")
                     add(name, "com.sun.xml.bind:jaxb-core:2.3.0.1")
                     add(name, "com.sun.xml.bind:jaxb-impl:2.3.2")
                 }
                 "annotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
+                // I guess that on AGP 4.x+ testAnnotationProcessor inherit from annotationProcessor
+                // not on 3.6.x
+                "testAnnotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
             }
         }
     }
