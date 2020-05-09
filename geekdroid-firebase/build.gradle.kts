@@ -5,6 +5,7 @@ plugins {
     kotlin("android")
     id("com.geekorum.build.android-tests")
     id("com.geekorum.build.android-avdl")
+    `maven-publish`
 }
 
 val artifactId by extra(name)
