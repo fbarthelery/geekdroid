@@ -1,0 +1,37 @@
+<!--
+
+    Geekdroid is a utility library for development on the Android
+    Platform.
+
+    Copyright (C) 2017-2020 by Frederic-Charles Barthelery.
+
+    This file is part of Geekdroid.
+
+    Geekdroid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Geekdroid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="16dp"
+        android:height="16dp"
+        android:viewportWidth="30.0"
+        android:viewportHeight="30.0" >
+    <group android:name="rotation"
+           android:pivotX="15"
+           android:pivotY="20"
+           android:rotation="180">
+        <path android:name="triangle"
+              android:fillColor="?colorControlNormal"
+              android:pathData="M5,15 L25,15 L15,25 L5,15 z"/>
+    </group>
+</vector>
