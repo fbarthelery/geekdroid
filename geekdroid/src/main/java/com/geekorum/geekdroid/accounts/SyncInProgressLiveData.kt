@@ -39,7 +39,7 @@ class SyncInProgressLiveData
 constructor(
         private val account: Account,
         private val authority: String
-) : LiveData<Boolean?>() {
+) : LiveData<Boolean>() {
 
     private var statusObserverHandle: Any? = null
 
