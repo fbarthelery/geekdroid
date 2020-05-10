@@ -45,6 +45,7 @@ fun Project.configureAnnotationProcessorDeps() {
                 // I guess that on AGP 4.x+ testAnnotationProcessor inherit from annotationProcessor
                 // not on 3.6.x
                 "testAnnotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
+                "androidTestAnnotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
             }
         }
     }
