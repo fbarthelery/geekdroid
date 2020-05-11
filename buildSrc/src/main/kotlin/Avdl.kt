@@ -95,6 +95,14 @@ fun Project.configureAvdlDevices(flydroidUrl: String, flydroidKey: String) {
             lastTestTask = connectedInstrumentTestProvider
         }
     }
+
+    afterEvaluate {
+        // ensure that launchDeviceTask are run after StopDeviceTask of previous project
+        rootProject.tasks {
+            getByPath(":geekdroid-firebase:launchAvdlDebugAndroidTest")
+                    .mustRunAfter(":geekdroid:stopAvdlDebugAndroidTest")
+        }
+    }
 }
 
 private fun TaskContainer.registerAvdlDevicesTaskForVariant(
