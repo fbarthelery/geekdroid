@@ -57,6 +57,7 @@ class BrowserLauncher
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
+            customTabsSession = null
             customTabsClient = null
         }
     }
