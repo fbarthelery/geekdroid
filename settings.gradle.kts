@@ -27,6 +27,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "geekdroid"
+rootProject.name = "geekdroid-parent"
 include(":geekdroid")
 include(":geekdroid-firebase")
