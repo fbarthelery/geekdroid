@@ -69,14 +69,14 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:1.1.3")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
     implementation("androidx.annotation:annotation:1.1.0")
-    implementation("androidx.preference:preference:1.1.0")
-    implementation("androidx.core:core-ktx:1.2.0")
-    implementation("androidx.fragment:fragment-ktx:1.2.2")
+    implementation("androidx.preference:preference:1.1.1")
+    implementation("androidx.core:core-ktx:1.3.1")
+    implementation("androidx.fragment:fragment-ktx:1.2.5")
 
     implementation("com.squareup.picasso:picasso:2.5.2")
-    implementation("com.squareup.okhttp3:okhttp:4.1.0")
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
 
-    val daggerVersion = "2.27"
+    val daggerVersion = "2.28.3"
     implementation(enforcedDaggerPlatform(daggerVersion))
     kapt(enforcedDaggerPlatform(daggerVersion))
     implementation("com.google.dagger:dagger:$daggerVersion")
@@ -94,11 +94,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
 
-    implementation("androidx.room:room-runtime:2.2.4")
+    implementation("androidx.room:room-runtime:2.2.5")
     implementation("androidx.browser:browser:1.2.0")
-    implementation("androidx.work:work-runtime:2.3.3")
-    implementation("androidx.navigation:navigation-common-ktx:2.2.1")
-    implementation("androidx.navigation:navigation-fragment:2.2.1")
+    implementation("androidx.work:work-runtime:2.4.0")
+    implementation("androidx.navigation:navigation-common-ktx:2.3.0")
+    implementation("androidx.navigation:navigation-fragment:2.3.0")
 }
 
 

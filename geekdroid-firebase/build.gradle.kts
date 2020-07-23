@@ -46,16 +46,16 @@ dependencies {
     implementation("com.jakewharton.timber:timber:4.7.1")
 
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
-    implementation("com.google.firebase:firebase-crashlytics:17.0.0-beta02")
+    implementation("com.google.firebase:firebase-crashlytics:17.1.1")
 
-    api("com.google.firebase:firebase-firestore-ktx:21.4.1")
-    implementation("com.google.firebase:firebase-auth:19.3.0")
+    api("com.google.firebase:firebase-firestore-ktx:21.5.0")
+    implementation("com.google.firebase:firebase-auth:19.3.2")
 
     // not firebase but they often work together so here we are
     implementation("com.google.android.gms:play-services-location:17.0.0")
 
     // not firebase but similar to gms api
-    implementation("com.google.android.play:core:1.7.1")
+    implementation("com.google.android.play:core:1.7.3")
 
     // fix for guava conflict
     // firebase depends on a older version of these dependencies while testImplementation dependencies
