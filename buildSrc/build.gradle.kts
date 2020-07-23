@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:3.6.3")
+    implementation("com.android.tools.build:gradle:4.0.1")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71")
     implementation("com.genymotion:plugin:1.4.2")
     implementation("gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.15.0")
