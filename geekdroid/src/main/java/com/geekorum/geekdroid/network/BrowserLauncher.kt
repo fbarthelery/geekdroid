@@ -64,10 +64,11 @@ class BrowserLauncher
 
     private val browserPackageNames: List<String>
         get() {
-            val activityIntent = Intent(Intent.ACTION_VIEW, "http://".toUri())
-            val resolveInfoList =
-                packageManager.queryIntentActivities(activityIntent, PackageManager.MATCH_DEFAULT_ONLY)
-            return resolveInfoList.map { it.activityInfo.packageName }
+            val activityIntent = Intent(Intent.ACTION_VIEW, "http://".toUri()).apply {
+                addCategory(Intent.CATEGORY_BROWSABLE)
+            }
+            return packageManager.queryIntentActivities(activityIntent, PackageManager.MATCH_ALL)
+                .map { it.activityInfo.packageName }
         }
 
     /**
@@ -77,7 +78,7 @@ class BrowserLauncher
      * preferredPackageSelector: allows to select preferred service to use.
      */
     fun warmUp(preferredPackageSelector: (List<String>) -> List<String> = { it }) {
-        val packageName = CustomTabsClient.getPackageName(application, preferredPackageSelector(browserPackageNames))
+        val packageName = CustomTabsClient.getPackageName(application, preferredPackageSelector(browserPackageNames), true)
         if (packageName.isNullOrEmpty()) {
             return
         }
