@@ -25,6 +25,7 @@ import android.app.Application
 import android.content.Intent
 import android.os.BatteryManager
 import android.os.Build
+import android.os.Looper.getMainLooper
 import android.os.PowerManager
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.core.content.getSystemService
@@ -37,6 +38,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowPowerManager
 import kotlin.test.BeforeTest
@@ -65,8 +67,10 @@ class BatterySaverLiveDataTest {
         liveData.observeForever(mockObserver)
         shadowPowerManager.setIsPowerSaveMode(true)
         application.sendBroadcast(Intent(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED))
+        shadowOf(getMainLooper()).idle()
         shadowPowerManager.setIsPowerSaveMode(false)
         application.sendBroadcast(Intent(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED))
+        shadowOf(getMainLooper()).idle()
         verifySequence {
             mockObserver.onChanged(false)
             mockObserver.onChanged(true)
@@ -96,6 +100,7 @@ class LowBatteryLiveDataTest {
         val mockObserver = mockk<Observer<Boolean>>(relaxed = true)
         liveData.observeForever(mockObserver)
         application.sendBroadcast(Intent(Intent.ACTION_BATTERY_LOW))
+        shadowOf(getMainLooper()).idle()
         verifySequence {
             // first battery is okay
             mockObserver.onChanged(false)
@@ -108,6 +113,7 @@ class LowBatteryLiveDataTest {
         val mockObserver = mockk<Observer<Boolean>>(relaxed = true)
         liveData.observeForever(mockObserver)
         application.sendBroadcast(Intent(Intent.ACTION_BATTERY_OKAY))
+        shadowOf(getMainLooper()).idle()
         verifySequence {
             // first battery is okay
             mockObserver.onChanged(false)
