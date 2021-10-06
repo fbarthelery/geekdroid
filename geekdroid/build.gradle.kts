@@ -35,12 +35,12 @@ val archivesBaseName by extra("geekdroid")
 val artifactId by extra (archivesBaseName)
 
 android {
-    val compileSdkVersion: String by rootProject.extra
-    compileSdkVersion(compileSdkVersion)
+    val compileSdkInt: Int by rootProject.extra
+    compileSdk = compileSdkInt
 
     defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(29)
+        minSdk = 24
+        targetSdk = 29
     }
     configureJavaVersion()
 
@@ -52,7 +52,7 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         isAbortOnError = false
     }
 

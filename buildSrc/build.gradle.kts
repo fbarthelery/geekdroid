@@ -28,13 +28,9 @@ plugins {
 
 version = "1.0"
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
-}
-
 repositories {
     gradlePluginPortal()
-    jcenter()
+    mavenCentral()
     google()
     maven {
         // Workaround for genymotion plugin not working on gradle 5.0
@@ -47,7 +43,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:4.0.1")
+    implementation("com.android.tools.build:gradle:7.0.2")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71")
     implementation("com.genymotion:plugin:1.4.2")
     implementation("gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.15.0")

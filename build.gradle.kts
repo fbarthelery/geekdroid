@@ -31,12 +31,12 @@ plugins {
 
 
 // some extra properties
-extra["compileSdkVersion"] = "android-29"
+extra["compileSdkInt"] = 31
 
 allprojects {
     repositories {
         google().setupGoogleContent()
-        jcenter()
+        mavenCentral()
     }
     apply<SourceLicenseCheckerPlugin>()
 }
