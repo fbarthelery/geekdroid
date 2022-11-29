@@ -44,6 +44,7 @@ import org.robolectric.shadows.ShadowPowerManager
 import kotlin.test.BeforeTest
 
 @RunWith(AndroidJUnit4::class)
+@Config(minSdk = Build.VERSION_CODES.Q)
 class BatterySaverLiveDataTest {
 
     lateinit var liveData: BatterySaverLiveData
@@ -81,6 +82,7 @@ class BatterySaverLiveDataTest {
 }
 
 @RunWith(AndroidJUnit4::class)
+@Config(minSdk = Build.VERSION_CODES.Q)
 class LowBatteryLiveDataTest {
 
     lateinit var liveData: LowBatteryLiveData
@@ -135,17 +137,4 @@ class LowBatteryLiveDataTest {
         }
     }
 
-    @Test
-    @Config(maxSdk = Build.VERSION_CODES.O_MR1)
-    fun testThatBeforePWhenBatteryIsAlreadyLowLivedataIsCorrect() {
-        val mockObserver = mockk<Observer<Boolean>>(relaxed = true)
-        application.sendStickyBroadcast(Intent(Intent.ACTION_BATTERY_CHANGED).apply {
-            putExtra(BatteryManager.EXTRA_LEVEL, 5)
-            putExtra(BatteryManager.EXTRA_SCALE, 100)
-        })
-        liveData.observeForever(mockObserver)
-        verifySequence {
-            mockObserver.onChanged(true)
-        }
-    }
 }

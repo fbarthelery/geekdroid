@@ -23,6 +23,7 @@ package com.geekorum.geekdroid.accounts;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
@@ -44,7 +45,8 @@ import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
 
 @RunWith(AndroidJUnit4.class)
-@Config(shadows = {ShadowContentResolver.class})
+@Config(shadows = {ShadowContentResolver.class},
+        sdk = Build.VERSION_CODES.Q)
 public class SyncInProgressLiveDataTest {
 
     @Rule

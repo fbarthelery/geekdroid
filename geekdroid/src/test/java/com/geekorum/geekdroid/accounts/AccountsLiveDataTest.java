@@ -23,6 +23,7 @@ package com.geekorum.geekdroid.accounts;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.os.Build;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.Lifecycle;
@@ -50,7 +51,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@Config(shadows = {com.geekorum.geekdroid.shadows.ShadowAccountManager.class})
+@Config(shadows = {com.geekorum.geekdroid.shadows.ShadowAccountManager.class},
+        sdk = Build.VERSION_CODES.Q)
 public class AccountsLiveDataTest {
 
     @Rule

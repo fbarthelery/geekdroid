@@ -59,7 +59,7 @@ class LowBatteryLiveData(
             batteryStatus?.getBooleanExtra(BatteryManager.EXTRA_BATTERY_LOW, false) ?: false
         } else {
             val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0) ?: 0
-            val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, 100) ?: 0
+            val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, 100) ?: 100
             val percent = level.toFloat() / scale * 100
             percent.roundToInt() <= 15
         }
