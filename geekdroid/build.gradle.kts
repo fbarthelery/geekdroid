@@ -41,7 +41,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 29
     }
     configureJavaVersion()
 

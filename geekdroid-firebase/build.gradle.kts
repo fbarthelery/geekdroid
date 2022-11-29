@@ -18,7 +18,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 29
     }
     configureJavaVersion()
 
@@ -46,7 +45,6 @@ dependencies {
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
     implementation("com.google.firebase:firebase-crashlytics:18.3.2")
 
     api("com.google.firebase:firebase-firestore-ktx:24.4.1")

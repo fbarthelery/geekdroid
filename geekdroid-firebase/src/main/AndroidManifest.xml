@@ -21,5 +21,4 @@
     along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.geekorum.geekdroid.firebase" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" />
