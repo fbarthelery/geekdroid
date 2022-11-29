@@ -136,11 +136,11 @@ class BrowserLauncher
         launchUrl(context, uri) { customizer?.customize(this) }
     }
 
-    interface LaunchCustomizer {
+    fun interface LaunchCustomizer {
         fun customize(builder: CustomTabsIntent.Builder)
     }
 
-    interface PreferredPackageSelector {
+    fun interface PreferredPackageSelector {
         fun orderByPreference(availablePackages: List<String>): List<String>
     }
 
