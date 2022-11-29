@@ -49,4 +49,12 @@ if (plugins.hasPlugin("com.android.library")) {
             }
         }
     }
+
+    tasks.named("publishProjectReleasePublicationToMavenLocal") {
+        dependsOn "assembleRelease"
+    }
+
+    tasks.named("publishProjectSnapshotPublicationToMavenLocal") {
+        dependsOn "assembleDebug"
+    }
 }
