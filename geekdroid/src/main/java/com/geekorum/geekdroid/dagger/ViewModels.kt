@@ -27,10 +27,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.savedstate.SavedStateRegistryOwner
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
 import dagger.MapKey
 import dagger.Module
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.multibindings.Multibinds
 import javax.inject.Inject
 import javax.inject.Provider
@@ -68,7 +69,7 @@ annotation class ViewModelKey(
  * ```
  * @see [DaggerDelegateSavedStateVMFactory]
  */
-@Module(includes = [GeekdroidAssistedModule::class])
+@Module
 abstract class ViewModelsModule private constructor() {
 
     @Multibinds
@@ -137,7 +138,7 @@ class DaggerDelegateSavedStateVMFactory @AssistedInject constructor(
         throw IllegalArgumentException("No ViewModel providers for key $key and class $modelClass")
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Creator {
         fun create(owner: SavedStateRegistryOwner, defaultArgs: Bundle? = null): DaggerDelegateSavedStateVMFactory
     }

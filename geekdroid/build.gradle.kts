@@ -77,13 +77,11 @@ dependencies {
     implementation("com.squareup.picasso:picasso:2.5.2")
     implementation("com.squareup.okhttp3:okhttp:4.6.0")
 
-    val daggerVersion = "2.28.3"
+    val daggerVersion = "2.44.1"
     implementation(enforcedDaggerPlatform(daggerVersion))
     kapt(enforcedDaggerPlatform(daggerVersion))
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    compileOnly("com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2")
-    kapt("com.squareup.inject:assisted-inject-processor-dagger2:0.5.2")
 
     implementation(enforcedPlatform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
