@@ -22,25 +22,9 @@
 package com.geekorum.geekdroid.firebase.logging
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
-/**
- * A [Timber.Tree] to log message in Firebase Crashlytics using Fabric.
- */
-@Deprecated("Use FirebaseCrashlyticsLoggingTree",
-    ReplaceWith("FirebaseCrashlyticsLoggingTree(FirebaseCrashlytics.getInstance())", "com.google.firebase.crashlytics.FirebaseCrashlytics"))
-class CrashlyticsLoggingTree : Timber.Tree() {
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        Crashlytics.log(priority, tag, message)
-        if (priority >= Log.ERROR) {
-            t?.let {
-                Crashlytics.logException(it)
-            }
-        }
-    }
-}
 
 /**
  * A [Timber.Tree] to log message in Firebase Crashlytics.
