@@ -100,7 +100,7 @@ class BannerContainer @JvmOverloads constructor(
 
     private fun bindExtendedBanner(binding: ViewBannerExtendedBinding, banner: BannerSpec) {
         binding.message.text = banner.message
-        binding.icon.setImageIcon(banner.icon?.toIcon())
+        binding.icon.setImageIcon(banner.icon?.toIcon(binding.icon.context))
         if (banner.icon == null) {
             binding.icon.visibility = View.GONE
         }

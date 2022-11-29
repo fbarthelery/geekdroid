@@ -64,18 +64,18 @@ android {
 }
 
 dependencies {
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("com.google.android.material:material:1.1.0")
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.coordinatorlayout:coordinatorlayout:1.1.0")
-    implementation("androidx.annotation:annotation:1.1.0")
-    implementation("androidx.preference:preference:1.1.1")
-    implementation("androidx.core:core-ktx:1.3.1")
-    implementation("androidx.fragment:fragment-ktx:1.2.5")
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("com.google.android.material:material:1.7.0")
+    api("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.annotation:annotation:1.5.0")
+    implementation("androidx.preference:preference:1.2.0")
+    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.5.4")
 
     implementation("com.squareup.picasso:picasso:2.5.2")
-    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     val daggerVersion = "2.44.1"
     implementation(enforcedDaggerPlatform(daggerVersion))
@@ -89,15 +89,15 @@ dependencies {
     implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.3.5"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
-    implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
 
-    implementation("androidx.room:room-runtime:2.2.5")
-    implementation("androidx.browser:browser:1.2.0")
-    implementation("androidx.work:work-runtime:2.4.0")
-    implementation("androidx.navigation:navigation-common-ktx:2.3.0")
-    implementation("androidx.navigation:navigation-fragment:2.3.0")
+    implementation("androidx.room:room-runtime:2.4.3")
+    implementation("androidx.browser:browser:1.4.0")
+    implementation("androidx.work:work-runtime:2.7.1")
+    implementation("androidx.navigation:navigation-common-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment:2.5.3")
 }
 
 

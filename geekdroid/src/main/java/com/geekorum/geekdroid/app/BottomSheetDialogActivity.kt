@@ -109,7 +109,7 @@ abstract class BottomSheetDialogActivity : AppCompatActivity() {
     private fun initializeBottomSheet() {
         binding = ActivityBottomSheetDialogBinding.inflate(layoutInflater, null, false)
         behavior = BottomSheetBehavior.from(binding.bottomSheet)
-        behavior.setBottomSheetCallback(callbackDelegator)
+        behavior.addBottomSheetCallback(callbackDelegator)
         behavior.isHideable = cancelable
         // We treat the CoordinatorLayout as outside the dialog though it is technically inside
         binding.touchOutside.setOnClickListener {
@@ -133,7 +133,7 @@ abstract class BottomSheetDialogActivity : AppCompatActivity() {
                 }
             }
 
-            override fun performAccessibilityAction(host: View, action: Int, args: Bundle): Boolean {
+            override fun performAccessibilityAction(host: View, action: Int, args: Bundle?): Boolean {
                 if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS && cancelable) {
                     finish()
                     return true
@@ -164,7 +164,7 @@ abstract class BottomSheetDialogActivity : AppCompatActivity() {
 
     fun shouldFinishOnTouchOutside(): Boolean {
         if (!canceledOnTouchOutsideSet) {
-            val a = obtainStyledAttributes(
+            obtainStyledAttributes(
                 intArrayOf(android.R.attr.windowCloseOnTouchOutside)).use {
                 cancelOnTouchOutside = it.getBoolean(0, true)
             }

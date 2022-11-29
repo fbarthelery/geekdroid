@@ -44,19 +44,19 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services")
 
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     implementation("com.crashlytics.sdk.android:crashlytics:2.10.1")
-    implementation("com.google.firebase:firebase-crashlytics:17.1.1")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
 
-    api("com.google.firebase:firebase-firestore-ktx:21.5.0")
-    implementation("com.google.firebase:firebase-auth:19.3.2")
+    api("com.google.firebase:firebase-firestore-ktx:24.4.1")
+    implementation("com.google.firebase:firebase-auth:21.1.0")
 
     // not firebase but they often work together so here we are
-    implementation("com.google.android.gms:play-services-location:17.0.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
     // not firebase but similar to gms api
-    implementation("com.google.android.play:core:1.7.3")
+    implementation("com.google.android.play:core:1.10.3")
 
     // fix for guava conflict
     // firebase depends on a older version of these dependencies while testImplementation dependencies

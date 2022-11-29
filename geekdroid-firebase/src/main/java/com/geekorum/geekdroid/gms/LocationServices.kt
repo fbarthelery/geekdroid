@@ -32,7 +32,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
-suspend fun FusedLocationProviderClient.requestLocation(locationRequest: LocationRequest): Location {
+suspend fun FusedLocationProviderClient.requestLocation(locationRequest: LocationRequest): Location? {
     return suspendCancellableCoroutine { cont ->
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
