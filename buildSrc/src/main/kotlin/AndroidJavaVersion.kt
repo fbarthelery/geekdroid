@@ -21,6 +21,8 @@
  */
 package com.geekorum.build
 
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.DefaultConfig
 import com.android.build.gradle.BaseExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -31,9 +33,15 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 /**
  * Configure java version compile options based on minSdkVersion value
  */
+@Suppress("UNCHECKED_CAST")
 fun BaseExtension.configureJavaVersion() {
-    val api = defaultConfig.minSdkVersion?.apiLevel ?: 0
+    (this as CommonExtension<*, *, DefaultConfig, *>).configureJavaVersion()
+}
+
+fun CommonExtension<*, *, DefaultConfig, *>.configureJavaVersion() {
+    val api = defaultConfig.minSdk ?: 1
     val version = when {
+        api >= 30 -> JavaVersion.VERSION_11
         api >= 24 -> JavaVersion.VERSION_1_8
         api >= 19 -> JavaVersion.VERSION_1_7
         else -> JavaVersion.VERSION_1_6
@@ -51,7 +59,7 @@ fun BaseExtension.configureJavaVersion() {
 }
 
 /**
- * Add missing annotation processord dependencies to build on Java 11
+ * Add missing annotation processor dependencies to build on Java 11
  */
 fun Project.configureAnnotationProcessorDeps() {
     dependencies {
@@ -62,11 +70,8 @@ fun Project.configureAnnotationProcessorDeps() {
                     add(name, "com.sun.xml.bind:jaxb-core:2.3.0.1")
                     add(name, "com.sun.xml.bind:jaxb-impl:2.3.2")
                 }
+
                 "annotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
-                // I guess that on AGP 4.x+ testAnnotationProcessor inherit from annotationProcessor
-                // not on 3.6.x
-                "testAnnotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
-                "androidTestAnnotationProcessor" -> add(name, "javax.xml.bind:jaxb-api:2.3.1")
             }
         }
     }

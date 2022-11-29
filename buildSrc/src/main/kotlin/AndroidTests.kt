@@ -21,6 +21,8 @@
  */
 package com.geekorum.build
 
+import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.DefaultConfig
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.TestOptions
 import org.gradle.api.Project
@@ -34,17 +36,19 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.kotlin
 
-const val espressoVersion = "3.2.0"
-const val androidxTestRunnerVersion = "1.3.0-alpha05"
-const val androidxTestCoreVersion = "1.3.0-alpha05"
-const val robolectricVersion = "4.6.1"
+const val espressoVersion = "3.5.0-alpha07" // alpha for this bug https://github.com/robolectric/robolectric/issues/6593
+const val androidxTestRunnerVersion = "1.4.0"
+const val androidxTestCoreVersion = "1.4.0"
+const val robolectricVersion = "4.8.2"
 
+private typealias BaseExtension = CommonExtension<*, *, DefaultConfig, *>
 
 /*
  * Configuration for espresso and robolectric usage in an Android project
  */
+@Suppress("UnstableApiUsage")
 internal fun Project.configureTests() {
-    extensions.configure<BaseExtension> {
+    extensions.configure<BaseExtension>("android") {
         defaultConfig {
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
             testInstrumentationRunnerArguments += mapOf(
@@ -57,9 +61,9 @@ internal fun Project.configureTests() {
             execution = "ANDROIDX_TEST_ORCHESTRATOR"
             animationsDisabled = true
 
-            unitTests(closureOf<TestOptions.UnitTestOptions> {
+            unitTests {
                 isIncludeAndroidResources = true
-            })
+            }
         }
     }
 
@@ -88,8 +92,8 @@ internal fun Project.configureTests() {
         dualTestImplementation("androidx.test.ext:truth:1.3.0-alpha01")
 
         // mock
-        testImplementation("io.mockk:mockk:1.12.0")
-        androidTestImplementation("io.mockk:mockk-android:1.12.0")
+        testImplementation("io.mockk:mockk:1.13.2")
+        androidTestImplementation("io.mockk:mockk-android:1.13.2")
         testImplementation("org.robolectric:robolectric:$robolectricVersion")
 
         constraints {

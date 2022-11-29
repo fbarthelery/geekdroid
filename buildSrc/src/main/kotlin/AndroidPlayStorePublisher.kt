@@ -41,10 +41,10 @@ import org.gradle.kotlin.dsl.the
 internal fun Project.configureAndroidPlayStorePublisher(): Unit {
     apply(plugin = "com.github.triplet.play")
     configure<PlayPublisherExtension> {
-        defaultToAppBundles = true
-        serviceAccountCredentials = file(properties["PLAY_STORE_JSON_KEY_FILE"]!!)
-        track = properties.getOrDefault("PLAY_STORE_TRACK", "internal") as String
-        fromTrack = properties.getOrDefault("PLAY_STORE_FROM_TRACK", "internal") as String
+        defaultToAppBundles.set(true)
+        track.set(properties.getOrDefault("PLAY_STORE_TRACK", "internal") as String)
+        fromTrack.set(properties.getOrDefault("PLAY_STORE_FROM_TRACK", "internal") as String)
+        serviceAccountCredentials.set(file(properties["PLAY_STORE_JSON_KEY_FILE"]!!))
     }
 
     val android = the<AppExtension>() as ExtensionAware
@@ -53,7 +53,7 @@ internal fun Project.configureAndroidPlayStorePublisher(): Unit {
         register("publishToGooglePlayStore") {
             group = "Continuous Delivery"
             description = "Publish project to Google play store"
-            dependsOn(named("publish"))
+            dependsOn(named("publishApps"))
         }
 
         // only there for consistent naming scheme

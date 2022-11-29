@@ -46,6 +46,34 @@ import org.gradle.kotlin.dsl.*
 fun Project.configureAvdlDevices(flydroidUrl: String, flydroidKey: String) {
     apply<FlydroidPlugin>()
 
+    // as FlydroidPlugin add some repositories to look for dependencies
+    // the repositories set in settings.gradle.kts via dependencyResolutionManagement
+    // are ignored because we are in mode PREFER_PROJECT
+    // to fix that we add the missing repository here too
+    repositories { // this mirror contents in settings.gradle.kts
+        google {
+            content {
+                includeGroupByRegex("""android\.arch\..*""")
+                includeGroupByRegex("""androidx\..*""")
+                includeGroupByRegex("""com\.android\..*""")
+                includeGroupByRegex("""com\.google\..*""")
+                includeGroup("com.crashlytics.sdk.android")
+                includeGroup("io.fabric.sdk.android")
+                includeGroup("org.chromium.net")
+                includeGroup("zipflinger")
+                includeGroup("com.android")
+            }
+        }
+        mavenCentral()
+        // for geekdroid
+        flatDir {
+            dirs("$rootDir/libs")
+        }
+        maven {
+            url = uri("https://jitpack.io")
+        }
+
+    }
     val oneInstrumentedTestService = gradle.sharedServices.registerIfAbsent(
             "oneInstrumentedTest", OneInstrumentedTestService::class.java) {
         maxParallelUsages.set(1)
@@ -57,12 +85,12 @@ fun Project.configureAvdlDevices(flydroidUrl: String, flydroidKey: String) {
     configure<AvdlExtension> {
         devices {
             android.testVariants.all {
-                register("android-n-${project.path}-$baseName") {
+                register("android-p-${project.path}-$baseName") {
                     setup = flydroid {
                         url = flydroidUrl
                         this.flydroidKey = flydroidKey
                         // android-q images fail, don't manage to start the tests
-                        image = "android-n"
+                        image = "android-p"
                          useTunnel = true
                     }
                 }
@@ -75,7 +103,7 @@ fun Project.configureAvdlDevices(flydroidUrl: String, flydroidKey: String) {
         var lastTestTask: TaskProvider<out Task>? = null
         android.testVariants.all {
             val (startTask, stopTask ) =
-                registerAvdlDevicesTaskForVariant(this, listOf("android-n-${project.path}-$baseName"))
+                registerAvdlDevicesTaskForVariant(this, listOf("android-p-${project.path}-$baseName"))
             listOf(startTask, stopTask).forEach {
                 it.configure {
                     usesService(oneInstrumentedTestService)

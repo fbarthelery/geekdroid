@@ -37,6 +37,7 @@ val artifactId by extra (archivesBaseName)
 android {
     val compileSdkInt: Int by rootProject.extra
     compileSdk = compileSdkInt
+    namespace = "com.geekorum.geekdroid"
 
     defaultConfig {
         minSdk = 24
@@ -53,11 +54,11 @@ android {
     }
 
     lint {
-        isAbortOnError = false
+        abortOnError = false
     }
 
     dataBinding {
-        isEnabled = true
+        enable = true
     }
 
 }
