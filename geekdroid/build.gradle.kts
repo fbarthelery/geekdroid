@@ -81,7 +81,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.fragment:fragment-ktx:1.5.4")
 
-    implementation("com.squareup.picasso:picasso:2.5.2")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     val daggerVersion = "2.44.1"

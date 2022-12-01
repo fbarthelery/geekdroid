@@ -35,24 +35,11 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.geekorum.geekdroid.R
 import com.geekorum.geekdroid.views.CheckableImageView
-import com.squareup.picasso.Picasso
 
 /**
  * Various adapters for the Android Data Binding library
  */
 
-@BindingAdapter("imageUrl")
-fun setImageUrl(imageView: ImageView, url: String) {
-    val requestCreator = Picasso.with(imageView.context)
-            .load(url)
-    when (imageView.scaleType) {
-        ImageView.ScaleType.CENTER_CROP -> requestCreator.centerCrop()
-        ImageView.ScaleType.FIT_CENTER -> requestCreator.fit().centerInside()
-        ImageView.ScaleType.FIT_XY -> requestCreator.fit()
-        else -> Unit // do nothing for the others
-    }
-    requestCreator.into(imageView)
-}
 
 @BindingAdapter("srcResource")
 fun setImageResources(imageView: ImageView, resourceId: Int) {
