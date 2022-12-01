@@ -20,7 +20,7 @@
  * along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
 import com.geekorum.build.configureJavaVersion
-import com.geekorum.build.enforcedDaggerPlatform
+import com.geekorum.build.daggerPlatform
 
 plugins {
     id("com.android.library")
@@ -31,8 +31,6 @@ plugins {
     `maven-publish`
 }
 
-val archivesBaseName by extra("geekdroid")
-val artifactId by extra (archivesBaseName)
 
 android {
     val compileSdkInt: Int by rootProject.extra
@@ -60,6 +58,14 @@ android {
         enable = true
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+        singleVariant("debug") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -77,15 +83,15 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     val daggerVersion = "2.44.1"
-    implementation(enforcedDaggerPlatform(daggerVersion))
-    kapt(enforcedDaggerPlatform(daggerVersion))
+    implementation(daggerPlatform(daggerVersion))
+    kapt(daggerPlatform(daggerVersion))
     implementation("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 
-    implementation(enforcedPlatform(kotlin("bom")))
+    implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
+    implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
     implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1")
@@ -102,5 +108,39 @@ dependencies {
 
 apply {
     from("$projectDir/../config/source-archive.gradle")
-    from("$projectDir/../config/android-maven-publication.gradle")
+}
+
+publishing {
+    publications {
+        val pomConfiguration: (MavenPom).() -> Unit = {
+            name.set("Geekdroid")
+            description.set("An Android library used in various Android projects. ")
+            licenses {
+                license {
+                    name.set("GPL-3.0-or-later")
+                    url.set("https://www.gnu.org/licenses/gpl-3.0.html")
+                    distribution.set("repo")
+                }
+            }
+            inceptionYear.set("2017")
+        }
+
+        register<MavenPublication>("release") {
+            afterEvaluate {
+                from(components["release"])
+            }
+            artifactId = "geekdroid"
+            pom(pomConfiguration)
+        }
+
+        register<MavenPublication>("debugSnapshot") {
+            afterEvaluate {
+                from(components["debug"])
+            }
+            artifactId = "geekdroid"
+            version = "$version-SNAPSHOT"
+            pom(pomConfiguration)
+
+        }
+    }
 }

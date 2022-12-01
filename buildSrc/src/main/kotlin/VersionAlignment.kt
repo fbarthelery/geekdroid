@@ -50,8 +50,8 @@ internal class DaggerPlatform {
     open class AlignmentRule : SameGroupAlignmentRule(platformName, "com.google.dagger")
 }
 
-fun DependencyHandler.enforcedDaggerPlatform(version: String): Dependency {
-    return enforcedPlatform("${components.getOrCreatePlatform(DaggerPlatform)}:$version")
+fun DependencyHandler.daggerPlatform(version: String): Dependency {
+    return platform("${components.getOrCreatePlatform(DaggerPlatform)}:$version")
 }
 
 open class PlatformFactory(

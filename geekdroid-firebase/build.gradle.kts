@@ -8,9 +8,6 @@ plugins {
     `maven-publish`
 }
 
-val archivesBaseName by extra("geekdroid-firebase")
-val artifactId by extra (archivesBaseName)
-
 android {
     val compileSdkInt: Int by rootProject.extra
     compileSdk = compileSdkInt
@@ -33,13 +30,22 @@ android {
         abortOnError = false
     }
 
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+        singleVariant("debug") {
+            withSourcesJar()
+        }
+    }
+
 }
 
 dependencies {
-    implementation(enforcedPlatform(kotlin("bom")))
+    implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(enforcedPlatform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
+    implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
     api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services")
 
@@ -65,5 +71,39 @@ dependencies {
 
 apply {
     from("$projectDir/../config/source-archive.gradle")
-    from("$projectDir/../config/android-maven-publication.gradle")
+}
+
+publishing {
+    publications {
+        val pomConfiguration: (MavenPom).() -> Unit = {
+            name.set("Geekdroid-Firebase")
+            description.set("An Android library used in various Android projects. ")
+            licenses {
+                license {
+                    name.set("GPL-3.0-or-later")
+                    url.set("https://www.gnu.org/licenses/gpl-3.0.html")
+                    distribution.set("repo")
+                }
+            }
+            inceptionYear.set("2017")
+        }
+
+        register<MavenPublication>("release") {
+            afterEvaluate {
+                from(components["release"])
+            }
+            artifactId = "geekdroid-firebase"
+            pom(pomConfiguration)
+        }
+
+        register<MavenPublication>("debugSnapshot") {
+            afterEvaluate {
+                from(components["debug"])
+            }
+            artifactId = "geekdroid-firebase"
+            version = "$version-SNAPSHOT"
+            pom(pomConfiguration)
+
+        }
+    }
 }
