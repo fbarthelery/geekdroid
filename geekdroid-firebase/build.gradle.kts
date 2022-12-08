@@ -59,9 +59,6 @@ dependencies {
     // not firebase but they often work together so here we are
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
-    // not firebase but similar to gms api
-    implementation("com.google.android.play:core:1.10.3")
-
     // fix for guava conflict
     // firebase depends on a older version of these dependencies while testImplementation dependencies
     // depends on new version

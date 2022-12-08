@@ -22,13 +22,11 @@
 package com.geekorum.geekdroid.gms
 
 import com.google.android.gms.tasks.Task
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import com.google.android.play.core.tasks.Task as PlayCoreTask
 
 /**
  * Await for the result of a [Task]
@@ -84,7 +82,7 @@ suspend fun <T> Task<T>.awaitNullable(): T? {
 /**
  * Converts this task to an instance of [Deferred].
  */
-fun <T> PlayCoreTask<T>.asDeferred(): Deferred<T> {
+fun <T> Task<T>.asDeferred(): Deferred<T> {
     if (isComplete) {
         val e = exception
         return if (e == null) {
@@ -106,36 +104,5 @@ fun <T> PlayCoreTask<T>.asDeferred(): Deferred<T> {
         }
     }
     return result
-}
-
-/**
- * Awaits for completion of the task without blocking a thread.
- *
- * If the [Job] of the current coroutine is cancelled or completed while this suspending function is waiting, this function
- * stops waiting for the completion stage and immediately resumes with [CancellationException].
- */
-suspend fun <T> PlayCoreTask<T>.await(): T {
-    // fast path
-    if (isComplete) {
-        val e = exception
-        return if (e == null) {
-            @Suppress("UNCHECKED_CAST")
-            result as T
-        } else {
-            throw e
-        }
-    }
-
-    return suspendCancellableCoroutine { cont ->
-        addOnCompleteListener {
-            val e = exception
-            if (e == null) {
-                @Suppress("UNCHECKED_CAST")
-                cont.resume(result as T)
-            } else {
-                cont.resumeWithException(e)
-            }
-        }
-    }
 }
 
