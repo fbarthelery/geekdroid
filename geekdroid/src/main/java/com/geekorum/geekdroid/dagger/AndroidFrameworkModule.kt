@@ -29,6 +29,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.PowerManager
+import android.security.NetworkSecurityPolicy
 import androidx.core.content.getSystemService
 import dagger.Module
 import dagger.Provides
@@ -77,6 +78,9 @@ class AndroidFrameworkModule {
         return application.getSystemService()!!
     }
 
+    @Provides
+    @Singleton
+    fun providesNetSecurityPolicy(): NetworkSecurityPolicy = NetworkSecurityPolicy.getInstance()
 }
 
 
