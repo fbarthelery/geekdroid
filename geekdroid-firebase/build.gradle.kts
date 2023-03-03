@@ -59,6 +59,8 @@ dependencies {
     // not firebase but they often work together so here we are
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    api("androidx.paging:paging-runtime-ktx:3.1.1")
+
     // fix for guava conflict
     // firebase depends on a older version of these dependencies while testImplementation dependencies
     // depends on new version

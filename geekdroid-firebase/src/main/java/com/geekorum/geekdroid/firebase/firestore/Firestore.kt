@@ -19,7 +19,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.geekorum.geekdroid.firebase
+package com.geekorum.geekdroid.firebase.firestore
 
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.CollectionReference
