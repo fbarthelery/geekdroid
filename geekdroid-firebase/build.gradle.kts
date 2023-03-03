@@ -51,9 +51,9 @@ dependencies {
 
     implementation("com.jakewharton.timber:timber:5.0.1")
 
-    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.5")
 
-    api("com.google.firebase:firebase-firestore-ktx:24.4.1")
+    api("com.google.firebase:firebase-firestore-ktx:24.4.3")
     implementation("com.google.firebase:firebase-auth:21.1.0")
 
     // not firebase but they often work together so here we are
