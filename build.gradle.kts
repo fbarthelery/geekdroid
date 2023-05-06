@@ -20,7 +20,6 @@
  * along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
 import com.geekorum.build.SourceLicenseCheckerPlugin
-import com.geekorum.build.configureAnnotationProcessorDeps
 import com.geekorum.build.setupGoogleContent
 
 plugins {
@@ -44,8 +43,6 @@ allprojects {
 subprojects {
     group = "com.geekorum"
     version = "0.0.1"
-
-    configureAnnotationProcessorDeps()
 }
 
 task("clean", type = Delete::class) {

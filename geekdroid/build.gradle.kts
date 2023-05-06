@@ -19,8 +19,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Geekdroid.  If not, see <http://www.gnu.org/licenses/>.
  */
-import com.geekorum.build.configureJavaVersion
-import com.geekorum.build.daggerPlatform
 import groovy.util.Node
 import groovy.util.NodeList
 
@@ -42,7 +40,10 @@ android {
     defaultConfig {
         minSdk = 24
     }
-    configureJavaVersion()
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
 
     buildTypes {
         getByName("release") {
@@ -68,6 +69,10 @@ android {
             withSourcesJar()
         }
     }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 dependencies {

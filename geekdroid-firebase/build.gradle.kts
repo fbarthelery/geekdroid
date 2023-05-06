@@ -1,5 +1,3 @@
-import com.geekorum.build.configureJavaVersion
-
 plugins {
     id("com.android.library")
     kotlin("android")
@@ -16,7 +14,10 @@ android {
     defaultConfig {
         minSdk = 24
     }
-    configureJavaVersion()
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
+    }
 
     buildTypes {
         getByName("release") {
@@ -38,8 +39,12 @@ android {
             withSourcesJar()
         }
     }
-
 }
+
+kotlin {
+    jvmToolchain(11)
+}
+
 
 dependencies {
     implementation(platform(kotlin("bom")))
