@@ -61,7 +61,7 @@ class EventObserver<T>(
     private val onEventUnhandled: (T) -> Unit
 ) : Observer<Event<T>> {
 
-    override fun onChanged(event: Event<T>?) {
-        event?.getContentIfNotHandled()?.let(onEventUnhandled)
+    override fun onChanged(event: Event<T>) {
+        event.getContentIfNotHandled()?.let(onEventUnhandled)
     }
 }

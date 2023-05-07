@@ -31,15 +31,12 @@ import org.gradle.api.artifacts.DependencyConstraint
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.dsl.DependencyConstraintHandler
 import org.gradle.api.artifacts.dsl.DependencyHandler
-import org.gradle.kotlin.dsl.closureOf
-import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.kotlin
+import org.gradle.kotlin.dsl.*
 
-const val espressoVersion = "3.5.0-alpha07" // alpha for this bug https://github.com/robolectric/robolectric/issues/6593
-const val androidxTestRunnerVersion = "1.4.0"
-const val androidxTestCoreVersion = "1.4.0"
-const val robolectricVersion = "4.8.2"
+const val espressoVersion = "3.5.1"
+const val androidxTestRunnerVersion = "1.5.2"
+const val androidxTestCoreVersion = "1.5.0"
+const val robolectricVersion = "4.10.2"
 
 private typealias BaseExtension = CommonExtension<*, *, DefaultConfig, *>
 
@@ -71,12 +68,12 @@ internal fun Project.configureTests() {
     dependencies {
         dualTestImplementation(kotlin("test-junit"))
 
-        androidTestUtil("androidx.test:orchestrator:$androidxTestRunnerVersion")
+        androidTestUtil("androidx.test:orchestrator:1.4.2")
         androidTestImplementation("androidx.test:runner:$androidxTestRunnerVersion")
         dualTestImplementation("androidx.test.ext:junit-ktx:1.1.1")
 
         dualTestImplementation("androidx.test:core-ktx:$androidxTestCoreVersion")
-        dualTestImplementation("androidx.test:rules:$androidxTestRunnerVersion")
+        dualTestImplementation("androidx.test:rules:1.5.0")
         // fragment testing is usually declared on debugImplementation configuration and need these dependencies
         constraints {
             debugImplementation("androidx.test:core:$androidxTestCoreVersion")
@@ -84,7 +81,9 @@ internal fun Project.configureTests() {
         }
 
         dualTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-        dualTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion")
+        dualTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
+            exclude("com.google.protobuf", "protobuf-lite")
+        }
         dualTestImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
 
         // assertions
@@ -92,8 +91,8 @@ internal fun Project.configureTests() {
         dualTestImplementation("androidx.test.ext:truth:1.3.0-alpha01")
 
         // mock
-        testImplementation("io.mockk:mockk:1.13.2")
-        androidTestImplementation("io.mockk:mockk-android:1.13.2")
+        testImplementation("io.mockk:mockk:1.13.5")
+        androidTestImplementation("io.mockk:mockk-android:1.13.5")
         testImplementation("org.robolectric:robolectric:$robolectricVersion")
 
         constraints {
