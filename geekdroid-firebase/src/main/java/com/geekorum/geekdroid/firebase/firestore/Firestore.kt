@@ -33,7 +33,7 @@ import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 
-
+@Deprecated("Use coroutine flows")
 class FirestoreQueryLiveData<T> constructor(
     private val query: Query,
     private val clazz: Class<T>
@@ -59,13 +59,16 @@ class FirestoreQueryLiveData<T> constructor(
     }
 }
 
+@Deprecated("Use coroutine flows")
 inline fun <reified T> Query.toLiveData() : LiveData<List<T>> =
     FirestoreQueryLiveData(this)
 
+@Deprecated("Use coroutine flows")
 inline fun <reified T> FirestoreQueryLiveData(query: Query): FirestoreQueryLiveData<T> {
     return FirestoreQueryLiveData(query, T::class.java)
 }
 
+@Deprecated("Use coroutine flows")
 class FirestoreDocumentLiveData<T>(
     private val document: DocumentReference,
     private val clazz: Class<T>
@@ -90,18 +93,14 @@ class FirestoreDocumentLiveData<T>(
     }
 }
 
+@Deprecated("Use coroutine flows")
 inline fun <reified T> DocumentReference.toLiveData(): LiveData<T?> =
     FirestoreDocumentLiveData(this)
 
+@Deprecated("Use coroutine flows")
 inline fun <reified T> FirestoreDocumentLiveData(document: DocumentReference): FirestoreDocumentLiveData<T> {
     return FirestoreDocumentLiveData(document, T::class.java)
 }
-
-@Deprecated("Use firebase-firestore-ktx", ReplaceWith("toObject()", imports = ["com.google.firebase.firestore.ktx.toObject"]))
-inline fun <reified T> DocumentSnapshot.toObject(): T? = toObject()
-
-@Deprecated("Use firebase-firestore-ktx", ReplaceWith("toObjects()", imports = ["com.google.firebase.firestore.ktx.toObjects"]))
-inline fun <reified T: Any> QuerySnapshot.toObjects(): List<T> = toObjects()
 
 /* suspend version of get(), set(), update(), delete() */
 suspend fun DocumentReference.aSet(pojo: Any): Void = set(pojo).await()
