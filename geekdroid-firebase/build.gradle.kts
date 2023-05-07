@@ -56,27 +56,21 @@ dependencies {
     implementation(platform(kotlin("bom")))
     implementation(kotlin("stdlib-jdk8"))
 
-    implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4"))
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-core")
-    api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services")
+    implementation(platform(libs.kotlinx.coroutines.bom))
+    api(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.play.services)
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    api(libs.timber)
 
-    implementation("com.google.firebase:firebase-crashlytics:18.3.5")
-
-    api("com.google.firebase:firebase-firestore-ktx:24.4.3")
-    implementation("com.google.firebase:firebase-auth:21.1.0")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    api(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.auth)
 
     // not firebase but they often work together so here we are
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.play.services.location)
 
-    api("androidx.paging:paging-runtime-ktx:3.1.1")
-
-    // fix for guava conflict
-    // firebase depends on a older version of these dependencies while testImplementation dependencies
-    // depends on new version
-    implementation("org.checkerframework:checker-compat-qual:2.5.5")
-    implementation("com.google.guava:guava:27.0.1-android")
+    api(libs.paging.runtime.ktx)
 }
 
 apply {
