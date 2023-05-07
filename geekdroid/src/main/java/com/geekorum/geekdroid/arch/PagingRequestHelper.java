@@ -125,6 +125,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 // THIS class is likely to be moved into the library in a future release. Feel free to copy it
 // from this sample.
+@Deprecated(forRemoval = true)
 public class PagingRequestHelper {
     private final Object mLock = new Object();
     private final Executor mRetryService;

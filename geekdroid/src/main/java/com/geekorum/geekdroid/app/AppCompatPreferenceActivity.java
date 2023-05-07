@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
  * to be used with AppCompat.
  */
+@Deprecated(forRemoval = true)
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;

@@ -32,7 +32,9 @@ import java.util.List;
 
 /**
  * A {@link CursorLoader} that can load data from a cursor and map it into an Object instance.
+ * @deprecated Use coroutines to load data asynchronously
  */
+@Deprecated(forRemoval = true)
 public class ObjectCursorLoader<T> extends CursorLoader {
 
     private final CursorMapper<T> cursorMapper;

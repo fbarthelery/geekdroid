@@ -35,6 +35,7 @@ import com.geekorum.geekdroid.R
 /**
  * A simple view to simulate a spinner to select an Account in a Navigation menu.
  */
+@Deprecated("Use a simple composable function")
 class AccountMenuLineView
     @JvmOverloads constructor(context: Context,
                               attrs: AttributeSet? = null,

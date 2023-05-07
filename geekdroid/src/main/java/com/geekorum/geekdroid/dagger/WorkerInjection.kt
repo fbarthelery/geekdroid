@@ -23,17 +23,13 @@
 
 package com.geekorum.geekdroid.dagger
 
-import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
-import androidx.work.WorkerParameters
 import dagger.MapKey
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.ElementsIntoSet
 import dagger.multibindings.Multibinds
-import javax.inject.Inject
-import javax.inject.Provider
 import kotlin.annotation.AnnotationTarget.FUNCTION
 import kotlin.reflect.KClass
 
@@ -70,33 +66,6 @@ abstract class WorkerInjectionModule private constructor() {
         fun workersFactoriesMapAsSet(workerFactoriesMap: Map<Class<out ListenableWorker>, @JvmSuppressWildcards WorkerFactory>) : Set<WorkerFactory> {
             return workerFactoriesMap.values.toSet()
         }
-    }
-
-}
-
-
-/**
- * Factory that can creates the [ListenableWorker] needed by the application using Dagger injection
- */
-// TODO deprecate and use DelegatingWorkerFactory from 2.1.0
-@Deprecated("Use DelegatingWorkerFactory instead")
-class DaggerDelegateWorkersFactory
-@Inject
-constructor(
-    private val providers: Map<Class<out ListenableWorker>, @JvmSuppressWildcards Provider<WorkerFactory>>
-) : WorkerFactory() {
-
-    private val providesByName by lazy {
-        providers.mapKeys { (k, _) ->
-            k.name
-        }
-    }
-
-    override fun createWorker(
-        appContext: Context, workerClassName: String, workerParameters: WorkerParameters
-    ): ListenableWorker? {
-        val factory = providesByName[workerClassName]?.get()
-        return factory?.createWorker(appContext, workerClassName, workerParameters)
     }
 
 }
