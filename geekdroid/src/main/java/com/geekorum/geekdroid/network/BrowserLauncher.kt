@@ -35,6 +35,8 @@ import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.browser.customtabs.CustomTabsSession
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 /**
@@ -48,17 +50,21 @@ class BrowserLauncher
     private var customTabsClient: CustomTabsClient? = null
     private var customTabsSession: CustomTabsSession? = null
     private var serviceBinded: Boolean = false
+    private val _browserComponentName = MutableStateFlow<ComponentName?>(null)
+    val browserComponent: StateFlow<ComponentName?> = _browserComponentName
 
     private val customTabsConnection = object : CustomTabsServiceConnection() {
         override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
             customTabsClient = client
             customTabsClient?.warmup(0)
             customTabsSession = customTabsClient?.newSession(null)
+            _browserComponentName.value = name
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
             customTabsSession = null
             customTabsClient = null
+            _browserComponentName.value = null
         }
     }
 
