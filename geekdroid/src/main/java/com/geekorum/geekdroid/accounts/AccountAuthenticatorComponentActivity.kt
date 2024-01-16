@@ -25,13 +25,13 @@ import android.accounts.AccountAuthenticatorActivity
 import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.core.content.IntentCompat
 
 /**
- * An [AccountAuthenticatorActivity] that supports and AppCompat theme
+ * An [AccountAuthenticatorActivity] that enables composition of higher level components.
  */
-open class AccountAuthenticatorAppCompatActivity : AppCompatActivity() {
+open class AccountAuthenticatorComponentActivity : ComponentActivity() {
 
     private var accountAuthenticatorResponse: AccountAuthenticatorResponse? = null
     var accountAuthenticatorResult: Bundle? = null

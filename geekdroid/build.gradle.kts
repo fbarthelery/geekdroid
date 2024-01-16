@@ -79,7 +79,6 @@ kotlin {
 
 dependencies {
     api(libs.recyclerview)
-    api(libs.appcompat)
     api(libs.material)
     api(libs.constraintlayout)
     api(libs.coordinatorlayout)

@@ -22,25 +22,26 @@
 package com.geekorum.geekdroid.app
 
 import android.annotation.SuppressLint
-import android.os.Build
+import android.app.Activity
 import android.os.Bundle
-import androidx.core.view.AccessibilityDelegateCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.core.content.res.use
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.geekorum.geekdroid.databinding.ActivityBottomSheetDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 /**
- * React like a [android.support.design.widget.BottomSheetDialogFragment] but is a separate [Activity].
+ * React like a [BottomSheetDialogFragment] but is a separate [Activity].
  * This allows you to launch the bottom sheet easily from another external activity.
  */
-abstract class BottomSheetDialogActivity : AppCompatActivity() {
+abstract class BottomSheetDialogActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityBottomSheetDialogBinding
     private lateinit var behavior: BottomSheetBehavior<FrameLayout>
