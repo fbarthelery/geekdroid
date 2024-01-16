@@ -1,31 +1,30 @@
 [versions]
-annotation = "1.6.0"
-appcompat = "1.6.1"
-browser = "1.5.0"
+annotation = "1.7.1"
+browser = "1.7.0"
 constraintlayout = "2.1.4"
 coordinatorlayout = "1.2.0"
-core-ktx = "1.10.1"
+core-ktx = "1.12.0"
 core-testing = "2.2.0"
-dagger = "2.47"
-firebase-bom = "32.2.1"
-fragment = "1.6.1"
+dagger = "2.50"
+firebase-bom = "32.7.1"
+fragment = "1.6.2"
 kotlinx-coroutines-bom = "1.7.3"
-lifecycle = "2.6.1"
-material = "1.9.0"
-navigation = "2.6.0"
-okhttp = "4.10.0"
-paging-runtime-ktx = "3.2.0"
-play-services-location = "21.0.1"
-recyclerview = "1.3.1"
-room = "2.5.2"
+lifecycle = "2.7.0"
+material = "1.11.0"
+navigation = "2.7.6"
+okhttp = "4.12.0"
+paging-runtime-ktx = "3.2.1"
+play-services-location = "21.1.0"
+preference = "1.2.1"
+recyclerview = "1.3.2"
+room = "2.6.1"
 timber = "5.0.1"
-workmanager = "2.8.1"
+workmanager = "2.9.0"
 
 [plugins]
 
 [libraries]
 annotation = { module = "androidx.annotation:annotation", version.ref = "annotation" }
-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 browser = { module = "androidx.browser:browser", version.ref = "browser" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "coordinatorlayout" }
@@ -50,6 +49,7 @@ navigation-common-ktx = { module = "androidx.navigation:navigation-common-ktx", 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
+preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }

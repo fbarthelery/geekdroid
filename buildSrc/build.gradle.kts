@@ -56,8 +56,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:8.2.0")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0")
+    implementation("com.android.tools.build:gradle:8.2.1")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
     implementation("gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1")
     implementation("com.github.triplet.gradle:play-publisher:3.7.0")
 
