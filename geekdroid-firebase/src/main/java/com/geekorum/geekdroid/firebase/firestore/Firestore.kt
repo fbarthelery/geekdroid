@@ -21,86 +21,11 @@
  */
 package com.geekorum.geekdroid.firebase.firestore
 
-import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.ktx.toObjects
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
-import timber.log.Timber
-
-@Deprecated("Use coroutine flows")
-class FirestoreQueryLiveData<T> constructor(
-    private val query: Query,
-    private val clazz: Class<T>
-) : LiveData<List<T>>() {
-
-    private val TAG = FirestoreQueryLiveData::class.java.simpleName
-    private var listenerRegistration: ListenerRegistration? = null
-
-
-    override fun onActive() {
-        listenerRegistration = query.addSnapshotListener { snapshot, firestoreException ->
-            if (firestoreException != null) {
-                Timber.e(firestoreException, "Error when listening to firestore")
-            }
-            value = snapshot?.toObjects(clazz) ?: emptyList()
-        }
-
-    }
-
-    override fun onInactive() {
-        super.onInactive()
-        listenerRegistration?.remove()
-    }
-}
-
-@Deprecated("Use coroutine flows")
-inline fun <reified T> Query.toLiveData() : LiveData<List<T>> =
-    FirestoreQueryLiveData(this)
-
-@Deprecated("Use coroutine flows")
-inline fun <reified T> FirestoreQueryLiveData(query: Query): FirestoreQueryLiveData<T> {
-    return FirestoreQueryLiveData(query, T::class.java)
-}
-
-@Deprecated("Use coroutine flows")
-class FirestoreDocumentLiveData<T>(
-    private val document: DocumentReference,
-    private val clazz: Class<T>
-) : LiveData<T>() {
-
-    private val TAG = FirestoreDocumentLiveData::class.java.simpleName
-    private var listenerRegistration: ListenerRegistration? = null
-
-
-    override fun onActive() {
-        listenerRegistration = document.addSnapshotListener { snapshot, firestoreException ->
-            if (firestoreException != null) {
-                Timber.e(firestoreException, "Error when listening to firestore")
-            }
-            value = snapshot?.toObject(clazz)
-        }
-    }
-
-    override fun onInactive() {
-        super.onInactive()
-        listenerRegistration?.remove()
-    }
-}
-
-@Deprecated("Use coroutine flows")
-inline fun <reified T> DocumentReference.toLiveData(): LiveData<T?> =
-    FirestoreDocumentLiveData(this)
-
-@Deprecated("Use coroutine flows")
-inline fun <reified T> FirestoreDocumentLiveData(document: DocumentReference): FirestoreDocumentLiveData<T> {
-    return FirestoreDocumentLiveData(document, T::class.java)
-}
 
 /* suspend version of get(), set(), update(), delete() */
 suspend fun DocumentReference.aSet(pojo: Any): Void = set(pojo).await()

@@ -24,59 +24,6 @@ package com.geekorum.geekdroid.gms
 import com.google.android.gms.tasks.Task
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-
-/**
- * Await for the result of a [Task]
- */
-@Deprecated("Use kotlinx-coroutines-play-services")
-suspend fun <T> Task<T>.await(): T {
-    try {
-        if (isComplete) return result as T
-    } catch (e: RuntimeException) {
-        return suspendCancellableCoroutine {
-            it.resumeWithException(e.cause ?: e)
-        }
-    }
-
-    return suspendCancellableCoroutine { cont ->
-        addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                cont.resume(task.result!!)
-            } else {
-                cont.resumeWithException(task.exception!!)
-            }
-        }
-    }
-}
-
-/**
- * Await for the nullable result of a [Task]
- * As [Task] is a Java API without proper nullability annotations,
- * use this method if you know the task can returns null
- */
-@Deprecated("Use kotlinx-coroutines-play-services")
-suspend fun <T> Task<T>.awaitNullable(): T? {
-    try {
-        if (isComplete) return result
-    } catch (e: RuntimeException) {
-        return suspendCancellableCoroutine {
-            it.resumeWithException(e.cause ?: e)
-        }
-    }
-
-    return suspendCancellableCoroutine { cont ->
-        addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                cont.resume(task.result)
-            } else {
-                cont.resumeWithException(task.exception!!)
-            }
-        }
-    }
-}
 
 
 /**
