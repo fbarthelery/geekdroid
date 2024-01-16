@@ -26,7 +26,7 @@ import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 import javax.inject.Inject
 
@@ -35,7 +35,8 @@ import javax.inject.Inject
  */
 class AccountSelector internal constructor(
         private val preferences: SharedPreferences,
-        private val accountManager: AccountManager) {
+        private val accountManager: AccountManager
+) {
 
     val savedAccount: Account?
         get() {

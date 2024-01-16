@@ -26,6 +26,7 @@ import android.accounts.AccountAuthenticatorResponse
 import android.accounts.AccountManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 
 /**
  * An [AccountAuthenticatorActivity] that supports and AppCompat theme
@@ -37,7 +38,7 @@ open class AccountAuthenticatorAppCompatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        accountAuthenticatorResponse = intent.getParcelableExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)
+        accountAuthenticatorResponse = IntentCompat.getParcelableExtra(intent, AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, AccountAuthenticatorResponse::class.java)
         accountAuthenticatorResponse?.onRequestContinued()
     }
 

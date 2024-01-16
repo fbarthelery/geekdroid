@@ -71,7 +71,7 @@ suspend fun AccountManager.getAuthToken(
         getAuthToken(account, tokenType, options, notifyAuthFailure, {
             try {
                 val bundle = it.result
-                cont.resume(bundle[AccountManager.KEY_AUTHTOKEN] as String?)
+                cont.resume(bundle.getString(AccountManager.KEY_AUTHTOKEN))
             } catch (e: Exception) {
                 cont.resumeWithException(e)
             }

@@ -105,6 +105,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.browser)
     implementation(libs.work.runtime)
+    implementation(libs.preference.ktx)
+
 }
 
 
