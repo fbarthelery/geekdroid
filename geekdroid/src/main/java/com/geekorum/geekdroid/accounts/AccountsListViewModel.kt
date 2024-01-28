@@ -23,9 +23,9 @@ package com.geekorum.geekdroid.accounts
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
 /**
  * ViewModel to select and use an account of a specified type.
@@ -35,13 +35,13 @@ abstract class AccountsListViewModel(protected val accountManager: AccountManage
                                      vararg accountTypes: String
 ) : ViewModel() {
 
-    private val mutableSelectedAccount = MutableLiveData<Account>()
-    val selectedAccount: LiveData<Account> = mutableSelectedAccount
+    private val mutableSelectedAccount = MutableLiveData<Account?>()
+    val selectedAccount: LiveData<Account?> = mutableSelectedAccount
 
     val accounts = AccountsLiveData(accountManager, *accountTypes)
 
     init {
-        mutableSelectedAccount.setValue(accountSelector.savedAccount)
+        mutableSelectedAccount.value = accountSelector.savedAccount
     }
 
     fun selectAccount(account: Account) {
