@@ -126,21 +126,6 @@ publishing {
                 }
             }
             inceptionYear.set("2017")
-
-            // exclude dagger-platform
-            withXml {
-                val dependencyManagement = asNode().get("dependencyManagement") as NodeList
-                val dependencies = dependencyManagement.getAt("dependencies") as NodeList
-                dependencies.getAt("dependency")
-                    .forEach {
-                        val node = it as Node
-                        val artifactId = (node.get("artifactId") as NodeList).single() as Node
-                        val artifactIdTxt = (artifactId.value() as NodeList).single()
-                        if (artifactIdTxt == "dagger-platform") {
-                            node.parent().remove(node)
-                        }
-                    }
-            }
         }
 
         register<MavenPublication>("release") {
