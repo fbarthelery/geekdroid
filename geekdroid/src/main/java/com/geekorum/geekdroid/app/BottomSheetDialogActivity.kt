@@ -41,6 +41,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
  * React like a [BottomSheetDialogFragment] but is a separate [Activity].
  * This allows you to launch the bottom sheet easily from another external activity.
  */
+@Deprecated("Use ModalBottomSheetActivity", replaceWith = ReplaceWith("ModalBottomSheetActivity"))
 abstract class BottomSheetDialogActivity : ComponentActivity() {
 
     private lateinit var binding: ActivityBottomSheetDialogBinding

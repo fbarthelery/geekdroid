@@ -53,8 +53,13 @@ android {
         abortOnError = false
     }
 
-    dataBinding {
-        enable = true
+    buildFeatures {
+        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -105,6 +110,11 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.work.runtime)
     implementation(libs.preference.ktx)
+
+    // compose stuff
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.activity.compose)
 
 }
 
