@@ -24,9 +24,9 @@ package com.geekorum.build
 import com.android.build.api.dsl.*
 import org.gradle.api.Project
 
-private typealias AppExtensionWithSigning = CommonExtension<*, ApplicationBuildType, *, *, *>
-private typealias LibExtensionWithSigning = CommonExtension<*, LibraryBuildType, *, *, *>
-private typealias TestExtensionWithSigning = CommonExtension<*, TestBuildType, *, *, *>
+private typealias AppExtensionWithSigning = CommonExtension<*, ApplicationBuildType, *, *, *, *>
+private typealias LibExtensionWithSigning = CommonExtension<*, LibraryBuildType, *, *, *, *>
+private typealias TestExtensionWithSigning = CommonExtension<*, TestBuildType, *, *, *, *>
 
 // TODO  This implicitly supports only the AppPlugin
 //  should we support other android plugins: LibraryPlugin TestPlugin ?

@@ -39,7 +39,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
-import java.util.*
+import java.util.Locale
 
 internal fun Project.configureSourceLicenseChecker() {
     apply<LicensePlugin>()
@@ -79,7 +79,7 @@ private fun Project.configureKotlin() {
     kotlin.sourceSets.configureEach {
         val kotlinSource = this
         val sourceSetTaskName =
-            "${LicenseBasePlugin.getLICENSE_TASK_BASE_NAME()}${taskInfix}${name.capitalize(Locale.ROOT)}"
+            "${LicenseBasePlugin.getLICENSE_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
         logger.info("Adding $sourceSetTaskName task for sourceSet ${kotlinSource.name}")
         if (sourceSetTaskName in tasks.names) {
             // tasks may have already been added by configuration for the Android plugin
@@ -90,7 +90,7 @@ private fun Project.configureKotlin() {
             source(kotlinSource.kotlin)
         }
         val sourceSetFormatTaskName =
-            "${LicenseBasePlugin.getFORMAT_TASK_BASE_NAME()}${taskInfix}${name.capitalize(Locale.ROOT)}"
+            "${LicenseBasePlugin.getFORMAT_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
         tasks.register(sourceSetFormatTaskName, LicenseFormat::class.java) {
             source(kotlinSource.kotlin)
         }
@@ -106,12 +106,12 @@ private fun Project.configureKotlinAndroid() {
         val kotlinSource = kotlin.sourceSets[name]
         logger.info("Adding kotlin sources from sourceSet $name to License plugin tasks")
         val sourceSetTaskName =
-            "${LicenseBasePlugin.getLICENSE_TASK_BASE_NAME()}${taskInfix}${name.capitalize(Locale.ROOT)}"
+            "${LicenseBasePlugin.getLICENSE_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
         tasks.named(sourceSetTaskName, LicenseCheck::class.java) {
             source(kotlinSource.kotlin, manifest.srcFile)
         }
         val sourceSetFormatTaskName =
-            "${LicenseBasePlugin.getFORMAT_TASK_BASE_NAME()}${taskInfix}${name.capitalize(Locale.ROOT)}"
+            "${LicenseBasePlugin.getFORMAT_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
         tasks.named(sourceSetFormatTaskName, LicenseFormat::class.java) {
             source(kotlinSource.kotlin, manifest.srcFile)
         }
@@ -163,3 +163,6 @@ private fun configureForSourceSet(sourceSet: AndroidSourceSet, task: TaskProvide
         source = sourceSetSources(sourceSet)
     }
 }
+
+private fun String.capitalize() =
+    replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
