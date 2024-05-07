@@ -27,19 +27,36 @@ import androidx.paging.PagingState
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DisposableHandle
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.take
 import timber.log.Timber
 import kotlin.coroutines.coroutineContext
 import kotlin.reflect.KClass
 
-fun <T: Any> QueryPagingSource(query: Query, type: KClass<T>): QueryPagingSource<T> {
-    return QueryPagingSource(query,  documentMapper = {
-        it.toObject(type.java)
-    })
+fun <T: Any> QueryPagingSource(query: Query, type: KClass<T>, validatePageKey: (DocumentSnapshot) -> Boolean = { true }): QueryPagingSource<T> {
+    return QueryPagingSource(
+        query,
+        documentMapper = {
+            it.toObject(type.java)
+        },
+        validatePageKey = validatePageKey
+    )
 }
 
 /**
@@ -47,7 +64,8 @@ fun <T: Any> QueryPagingSource(query: Query, type: KClass<T>): QueryPagingSource
  */
 class QueryPagingSource<T: Any>(
     private val query: Query,
-    private val documentMapper: (DocumentSnapshot) -> T?
+    private val validatePageKey: (DocumentSnapshot) -> Boolean = { true },
+    private val documentMapper: (DocumentSnapshot) -> T?,
 ) : PagingSource<QueryPagingSource.Key, T>() {
     private val sourceScope = CoroutineScope(Job())
 
@@ -69,14 +87,30 @@ class QueryPagingSource<T: Any>(
         var query = this.query
             .limit(params.loadSize.toLong())
 
-        params.key?.let {
+        var hasInvalidPreviousKey = false
+        var hasInvalidNextKey = false
+        params.key?.let { key ->
             query = when (params) {
                 is LoadParams.Prepend -> {
-                    (params.key as? Key.StartAtDocumentKey)?.documentSnapshot?.let {
-                        query.startAfter(it)
+                    (key as? Key.StartAtDocumentKey)?.documentSnapshot?.let {
+                        if (!validatePageKey(it)) {
+                            hasInvalidPreviousKey = true
+                            query
+                        } else {
+                            query.startAfter(it)
+                        }
                     } ?: query
                 }
-                is LoadParams.Append -> query.startAfter((params.key as Key.StartAtDocumentKey).documentSnapshot)
+                is LoadParams.Append -> {
+                    (key as Key.StartAtDocumentKey).documentSnapshot.let {
+                        if (!validatePageKey(it)) {
+                            hasInvalidNextKey = true
+                            query
+                        } else {
+                            query.startAfter(it)
+                        }
+                    }
+                }
                 is LoadParams.Refresh -> query
             }
         }
@@ -84,6 +118,14 @@ class QueryPagingSource<T: Any>(
             lastNextKey = Key.InitialKey
         }
 
+        if (hasInvalidPreviousKey || hasInvalidNextKey) {
+            Timber.w("Query has invalid boundary key, return empty results")
+            val prevKey = lastNextKey.takeIf { hasInvalidNextKey && it !is Key.InitialKey }
+            return LoadResult.Page(
+                data = emptyList(),
+                prevKey = prevKey,
+                nextKey = null)
+        }
         // share the query between 2 coroutines
         val dataChannel: SharedFlow<SnapshotsOrError> = query.asDocumentFlow()
             .map {
@@ -119,7 +161,7 @@ class QueryPagingSource<T: Any>(
     override fun getRefreshKey(state: PagingState<Key, T>): Key? = null
 
     sealed class Key {
-        object InitialKey : Key()
+        data object InitialKey : Key()
         data class StartAtDocumentKey(val documentSnapshot: DocumentSnapshot) : Key()
     }
 }
