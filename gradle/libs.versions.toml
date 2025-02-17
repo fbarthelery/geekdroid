@@ -2,7 +2,7 @@
 android-gradle-plugin = "8.8.1"
 annotation = "1.7.1"
 androidx-activity = "1.8.2"
-androidx-compose-bom = "2024.03.00"
+androidx-compose-bom = "2025.02.00"
 browser = "1.8.0"
 constraintlayout = "2.1.4"
 coordinatorlayout = "1.2.0"

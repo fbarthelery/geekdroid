@@ -88,7 +88,6 @@ open class ModalBottomSheetActivity : ComponentActivity() {
                 sheetState = sheetState,
                 onDismissRequest = {},
                 dragHandle = null,
-                windowInsets = WindowInsets(0)
             ) {
                 _sheetContent()
             }
