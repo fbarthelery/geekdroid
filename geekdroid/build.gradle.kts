@@ -29,6 +29,7 @@ plugins {
     id("com.geekorum.build.android-tests")
     id("com.geekorum.build.android-avdl")
     `maven-publish`
+    alias(libs.plugins.compose.compiler)
 }
 
 
@@ -56,10 +57,6 @@ android {
     buildFeatures {
         dataBinding = true
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {

@@ -65,7 +65,7 @@ fun Provider<PluginDependency>.gav(): String {
 
 dependencies {
     implementation(libs.plugins.android.application.gav())
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.23")
+    implementation(libs.plugins.kotlin.android.gav())
     implementation("gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1")
     implementation("com.github.triplet.gradle:play-publisher:3.7.0")
 
