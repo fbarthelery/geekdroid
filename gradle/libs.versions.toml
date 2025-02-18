@@ -22,6 +22,7 @@ preference = "1.2.1"
 recyclerview = "1.4.0"
 room = "2.6.1"
 timber = "5.0.1"
+turbine = "1.0.0"
 workmanager = "2.10.0"
 
 [plugins]
@@ -54,6 +55,7 @@ fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragm
 kotlinx-coroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinx-coroutines-bom" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test" }
 lifecycle-livedata-core-ktx = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-savedstate = { module = "androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
@@ -64,5 +66,6 @@ preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = 
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workmanager" }
 

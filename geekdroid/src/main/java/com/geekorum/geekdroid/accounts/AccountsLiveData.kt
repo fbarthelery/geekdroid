@@ -27,10 +27,14 @@ import android.accounts.OnAccountsUpdateListener
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 
 /**
  * Allows to observe the list of [Account] for a specified Account type.
  */
+@Deprecated("Use AccountManager.accountsFlow()")
 class AccountsLiveData(
         private val accountManager: AccountManager,
         vararg accountType: String?
@@ -63,4 +67,44 @@ class AccountsLiveData(
         return accounts.filter { it.type in accountTypes }.toTypedArray()
     }
 
+}
+
+/**
+ * Allows to observe the list of [Account] for a specified Account type.
+ */
+fun AccountManager.accountsFlow(vararg accountType: String): Flow<List<Account>> = callbackFlow {
+    val listener = object : OnAccountsUpdateListener {
+        override fun onAccountsUpdated(accounts: Array<out Account?>?) {
+            val forTypes = accounts?.filter { it?.type in accountType }?.filterNotNull() ?: emptyList()
+            trySend(forTypes)
+        }
+    }
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        addOnAccountsUpdatedListener(
+            listener, null, true,
+            accountType
+        )
+    } else {
+        addOnAccountsUpdatedListener(listener, null, true)
+    }
+
+    awaitClose {
+        removeOnAccountsUpdatedListener(listener)
+    }
+}
+
+/**
+ * Allows to observe the list of [Account]
+ */
+fun AccountManager.accountsFlow(): Flow<List<Account>> = callbackFlow {
+    val listener = object : OnAccountsUpdateListener {
+        override fun onAccountsUpdated(accounts: Array<out Account?>?) {
+            trySend(accounts?.filterNotNull() ?: emptyList())
+        }
+    }
+    addOnAccountsUpdatedListener(listener, null, true)
+
+    awaitClose {
+        removeOnAccountsUpdatedListener(listener)
+    }
 }
