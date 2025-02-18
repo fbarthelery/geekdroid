@@ -30,11 +30,14 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.PowerManager
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 import kotlin.math.roundToInt
 
 /**
  * Observe the battery to know if a low level was reached
  */
+@Deprecated("Use Application.lowBatteryFlow()")
 class LowBatteryLiveData(
     private val application: Application
 ) : LiveData<Boolean>() {
@@ -70,10 +73,42 @@ class LowBatteryLiveData(
     }
 }
 
+fun Application.lowBatteryFlow() = callbackFlow {
+    val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_BATTERY_OKAY -> trySend(false)
+                Intent.ACTION_BATTERY_LOW -> trySend(true)
+            }
+        }
+    }
+    val intentFilter = IntentFilter().apply {
+        addAction(Intent.ACTION_BATTERY_LOW)
+        addAction(Intent.ACTION_BATTERY_OKAY)
+    }
+    registerReceiver(broadcastReceiver, intentFilter)
+
+    val batteryStatus = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+    val value  = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        batteryStatus?.getBooleanExtra(BatteryManager.EXTRA_BATTERY_LOW, false) == true
+    } else {
+        val level = batteryStatus?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0) ?: 0
+        val scale = batteryStatus?.getIntExtra(BatteryManager.EXTRA_SCALE, 100) ?: 100
+        val percent = level.toFloat() / scale * 100
+        percent.roundToInt() <= 15
+    }
+    trySend(value)
+
+    awaitClose {
+        unregisterReceiver(broadcastReceiver)
+    }
+}
+
 
 /**
  * Observe the [PowerManager] to know if the system is in Power saving mode.
  */
+@Deprecated("Use isPowerSaveModeFlow(application, powerManager)")
 class BatterySaverLiveData(
     private val application: Application,
     private val powerManager: PowerManager
@@ -93,6 +128,21 @@ class BatterySaverLiveData(
     }
 
     override fun onInactive() {
+        application.unregisterReceiver(broadcastReceiver)
+    }
+}
+
+fun isPowerSaveModeFlow(application: Application, powerManager: PowerManager) = callbackFlow {
+    val broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            trySend(powerManager.isPowerSaveMode)
+        }
+    }
+    application.registerReceiver(broadcastReceiver, IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED))
+
+    trySend(powerManager.isPowerSaveMode)
+
+    awaitClose {
         application.unregisterReceiver(broadcastReceiver)
     }
 }
