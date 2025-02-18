@@ -28,12 +28,15 @@ import android.content.ContentResolver
 import android.content.ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
 
 /**
  * Allows to observe if a Sync operation is active for a given account.
  *
  * @see ContentResolver.isSyncActive
  */
+@Deprecated("Use isSyncActiveFlow(account, authority)")
 class SyncInProgressLiveData
 @RequiresPermission(Manifest.permission.READ_SYNC_STATS)
 constructor(
@@ -61,4 +64,25 @@ constructor(
         val isSyncing = ContentResolver.isSyncActive(account, authority)
         postValue(isSyncing)
     }
+}
+
+/**
+ * Allows to observe if a Sync operation is active for a given account.
+ *
+ * @RequiresPermission(Manifest.permission.READ_SYNC_STATS) when collecting the flow
+ * @see ContentResolver.isSyncActive
+ */
+fun isSyncActiveFlow(account: Account, authority: String) = callbackFlow {
+    fun sendCurrent() {
+        val isActive = ContentResolver.isSyncActive(account, authority)
+        trySend(isActive)
+    }
+    val handle = ContentResolver.addStatusChangeListener(SYNC_OBSERVER_TYPE_ACTIVE) { which ->
+        if (which == SYNC_OBSERVER_TYPE_ACTIVE) {
+            sendCurrent()
+        }
+    }
+    sendCurrent()
+
+    awaitClose { ContentResolver.removeStatusChangeListener(handle) }
 }
