@@ -49,9 +49,6 @@ kotlin {
 
 
 dependencies {
-    implementation(platform(kotlin("bom")))
-    implementation(kotlin("stdlib-jdk8"))
-
     implementation(platform(libs.kotlinx.coroutines.bom))
     api(libs.kotlinx.coroutines.core)
     api(libs.kotlinx.coroutines.play.services)

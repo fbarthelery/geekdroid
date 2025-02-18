@@ -90,9 +90,6 @@ dependencies {
     implementation(libs.dagger.compiler)
     kapt(libs.dagger.compiler)
 
-    implementation(platform(kotlin("bom")))
-    implementation(kotlin("stdlib-jdk8"))
-
     implementation(platform(libs.kotlinx.coroutines.bom))
     implementation(libs.kotlinx.coroutines.core)
 
