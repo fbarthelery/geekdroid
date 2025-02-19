@@ -26,6 +26,12 @@ import android.accounts.AccountManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 
 /**
  * ViewModel to select and use an account of a specified type.
@@ -35,10 +41,11 @@ abstract class AccountsListViewModel(protected val accountManager: AccountManage
                                      vararg accountTypes: String
 ) : ViewModel() {
 
-    private val mutableSelectedAccount = MutableLiveData<Account?>()
-    val selectedAccount: LiveData<Account?> = mutableSelectedAccount
+    private val mutableSelectedAccount = MutableStateFlow<Account?>(null)
+    val selectedAccount: StateFlow<Account?> = mutableSelectedAccount.asStateFlow()
 
-    val accounts = AccountsLiveData(accountManager, *accountTypes)
+    val accounts = accountManager.accountsFlow(*accountTypes)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
         mutableSelectedAccount.value = accountSelector.savedAccount
@@ -46,7 +53,7 @@ abstract class AccountsListViewModel(protected val accountManager: AccountManage
 
     fun selectAccount(account: Account) {
         accountSelector.saveAccount(account)
-        mutableSelectedAccount.setValue(account)
+        mutableSelectedAccount.value = account
     }
 
 }
