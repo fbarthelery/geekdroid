@@ -271,7 +271,7 @@ class ConcatQueriesPagingSource<T: Any>(
             val nextQueryKeys = queriesNextKeys[nextKey.queryIdx]!!
             nextQueryKeys += nextKey.queryKey
             while (nextQueryKeys.size > 2 )
-                nextQueryKeys.removeFirst()
+                nextQueryKeys.removeAt(0)
         }
     }
 
