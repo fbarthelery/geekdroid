@@ -45,9 +45,9 @@ subprojects {
     version = "0.0.1"
 }
 
-task("clean", type = Delete::class) {
+tasks.register("clean", type = Delete::class) {
     doLast {
-        delete(buildDir)
+        delete(layout.buildDirectory)
     }
 }
 
