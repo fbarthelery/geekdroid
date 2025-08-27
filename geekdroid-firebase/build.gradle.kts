@@ -57,7 +57,7 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
-    api(libs.firebase.firestore.ktx)
+    api(libs.firebase.firestore)
     implementation(libs.firebase.auth)
 
     // not firebase but they often work together so here we are
