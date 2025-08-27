@@ -132,7 +132,7 @@ fun ApplicationAndroidComponentsExtension.configureVersionChangeset(project: Pro
         val mainOutput = it.outputs.single { it.outputType == OutputType.SINGLE }
 
         // create version Code generating task
-        val versionCodeTask = project.tasks.register<VersionCodeTask>("computeVersionCodeFor${it.name.capitalized()}") {
+        val versionCodeTask = project.tasks.register<VersionCodeTask>("computeVersionCodeFor${it.name.replaceFirstChar { it.titlecase() }}") {
             this.major.set(major)
             this.minor.set(minor)
             this.patch.set(patch)
