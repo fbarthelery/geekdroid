@@ -20,7 +20,7 @@ paging-runtime-ktx = "3.3.6"
 play-services-location = "21.3.0"
 preference = "1.2.1"
 recyclerview = "1.4.0"
-room = "2.7.2"
+room = "2.8.0"
 timber = "5.0.1"
 turbine = "1.2.1"
 workmanager = "2.10.3"
@@ -64,7 +64,7 @@ paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.re
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "preference" }
 recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-common = { module = "androidx.room:room-common", version.ref = "room" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 work-runtime = { module = "androidx.work:work-runtime", version.ref = "workmanager" }

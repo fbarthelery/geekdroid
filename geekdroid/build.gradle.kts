@@ -97,7 +97,7 @@ dependencies {
     api(libs.lifecycle.viewmodel.savedstate)
     testImplementation(libs.core.testing)
 
-    implementation(libs.room.runtime)
+    implementation(libs.room.common)
     implementation(libs.browser)
     implementation(libs.work.runtime)
     implementation(libs.preference.ktx)
