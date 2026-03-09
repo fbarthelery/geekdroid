@@ -21,10 +21,9 @@
  */
 package com.geekorum.build
 
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.DefaultConfig
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.TestOptions
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyConstraint
@@ -33,28 +32,37 @@ import org.gradle.api.artifacts.dsl.DependencyConstraintHandler
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.*
 
-const val espressoVersion = "3.5.1"
-const val androidxTestRunnerVersion = "1.5.2"
-const val androidxTestCoreVersion = "1.5.0"
-const val robolectricVersion = "4.10.2"
+const val espressoVersion = "3.6.1"
+const val androidxTestRunnerVersion = "1.6.2"
+const val androidxTestCoreVersion = "1.6.1"
+const val robolectricVersion = "4.14.1"
 
-private typealias BaseExtension = CommonExtension<*, *, DefaultConfig, *, *, *>
 
 /*
  * Configuration for espresso and robolectric usage in an Android project
  */
-@Suppress("UnstableApiUsage")
 internal fun Project.configureTests() {
-    extensions.configure<BaseExtension>("android") {
-        defaultConfig {
+    extensions.configure<CommonExtension>("android") {
+        if (this is ApplicationExtension) {
+            defaultConfig {
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-            testInstrumentationRunnerArguments += mapOf(
-                "clearPackageData" to "true",
-                "disableAnalytics" to "true"
-            )
+                testInstrumentationRunnerArguments += mapOf(
+                    "clearPackageData" to "true",
+                    "disableAnalytics" to "true"
+                )
+            }
+        }
+        if (this is LibraryExtension) {
+            defaultConfig {
+            testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                testInstrumentationRunnerArguments += mapOf(
+                    "clearPackageData" to "true",
+                    "disableAnalytics" to "true"
+                )
+            }
         }
 
-        testOptions {
+        testOptions.apply {
             execution = "ANDROIDX_TEST_ORCHESTRATOR"
             animationsDisabled = true
 
@@ -64,20 +72,20 @@ internal fun Project.configureTests() {
         }
     }
 
-
     dependencies {
         dualTestImplementation(kotlin("test-junit"))
 
-        androidTestUtil("androidx.test:orchestrator:1.4.2")
+        androidTestUtil("androidx.test:orchestrator:1.5.1")
         androidTestImplementation("androidx.test:runner:$androidxTestRunnerVersion")
-        dualTestImplementation("androidx.test.ext:junit-ktx:1.1.1")
+        dualTestImplementation("androidx.test.ext:junit-ktx:1.2.1")
 
         dualTestImplementation("androidx.test:core-ktx:$androidxTestCoreVersion")
-        dualTestImplementation("androidx.test:rules:1.5.0")
+        dualTestImplementation("androidx.test:rules:1.6.1")
+
         // fragment testing is usually declared on debugImplementation configuration and need these dependencies
         constraints {
             debugImplementation("androidx.test:core:$androidxTestCoreVersion")
-            debugImplementation("androidx.test:monitor:$androidxTestRunnerVersion")
+            debugImplementation("androidx.test:monitor:1.7.2")
         }
 
         dualTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
@@ -87,12 +95,12 @@ internal fun Project.configureTests() {
         dualTestImplementation("androidx.test.espresso:espresso-intents:$espressoVersion")
 
         // assertions
-        dualTestImplementation("com.google.truth:truth:1.0")
-        dualTestImplementation("androidx.test.ext:truth:1.3.0-alpha01")
+        dualTestImplementation("com.google.truth:truth:1.4.4")
+        dualTestImplementation("androidx.test.ext:truth:1.6.0")
 
         // mock
-        testImplementation("io.mockk:mockk:1.13.5")
-        androidTestImplementation("io.mockk:mockk-android:1.13.5")
+        testImplementation("io.mockk:mockk:1.13.8")
+        androidTestImplementation("io.mockk:mockk-android:1.13.8")
         testImplementation("org.robolectric:robolectric:$robolectricVersion")
 
         constraints {

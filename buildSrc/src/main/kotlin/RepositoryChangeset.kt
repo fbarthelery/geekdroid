@@ -42,7 +42,12 @@ internal fun ExecOperations.getGitSha1(projectDir: File): String? = runCommand("
 
 internal fun ExecOperations.getHgSha1(projectDir: File): String? = runCommand("hg id --debug -i -r .", workingDir = projectDir)?.trim()
 
-internal fun ExecOperations.getHgLocalRevisionNumber(projectDir: File): String? = runCommand("hg id -n -r .", workingDir = projectDir)?.trim()
+internal fun ExecOperations.getHgLocalRevisionNumber(projectDir: File): String? {
+    val hg = File(projectDir, ".hg")
+    return if (hg.exists()) {
+        runCommand("hg id -n -r .", workingDir = projectDir)?.trim()
+    } else null
+}
 
 private fun ExecOperations.getChangeSet(projectDir: File): String {
     val git = File(projectDir, ".git")
@@ -132,7 +137,7 @@ fun ApplicationAndroidComponentsExtension.configureVersionChangeset(project: Pro
         val mainOutput = it.outputs.single { it.outputType == OutputType.SINGLE }
 
         // create version Code generating task
-        val versionCodeTask = project.tasks.register<VersionCodeTask>("computeVersionCodeFor${it.name.replaceFirstChar { it.titlecase() }}") {
+        val versionCodeTask = project.tasks.register<VersionCodeTask>("computeVersionCodeFor${it.name.capitalized()}") {
             this.major.set(major)
             this.minor.set(minor)
             this.patch.set(patch)
@@ -154,3 +159,5 @@ fun ApplicationAndroidComponentsExtension.configureVersionChangeset(project: Pro
         })
     }
 }
+
+private fun String.capitalized() = replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }

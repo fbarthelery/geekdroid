@@ -21,12 +21,11 @@
  */
 plugins {
     id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
     id("com.geekorum.build.android-tests")
     id("com.geekorum.build.android-avdl")
     `maven-publish`
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 
@@ -42,7 +41,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"),
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro")
         }
     }
@@ -88,7 +87,7 @@ dependencies {
     api(libs.okhttp)
 
     implementation(libs.dagger.compiler)
-    kapt(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
 
     implementation(platform(libs.kotlinx.coroutines.bom))
     implementation(libs.kotlinx.coroutines.core)

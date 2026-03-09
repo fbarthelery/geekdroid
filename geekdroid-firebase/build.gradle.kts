@@ -1,6 +1,5 @@
 plugins {
     id("com.android.library")
-    kotlin("android")
     id("com.geekorum.build.android-tests")
     id("com.geekorum.build.android-avdl")
     `maven-publish`
@@ -18,7 +17,7 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"),
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro")
         }
     }

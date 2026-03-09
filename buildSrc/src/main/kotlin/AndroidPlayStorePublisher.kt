@@ -21,7 +21,7 @@
  */
 package com.geekorum.build
 
-import com.android.build.gradle.AppExtension
+import com.android.build.api.dsl.ApplicationExtension
 import com.github.triplet.gradle.play.PlayPublisherExtension
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -47,7 +47,7 @@ internal fun Project.configureAndroidPlayStorePublisher(): Unit {
         serviceAccountCredentials.set(file(properties["PLAY_STORE_JSON_KEY_FILE"]!!))
     }
 
-    val android = the<AppExtension>() as ExtensionAware
+    val android = the<ApplicationExtension>() as ExtensionAware
 
     tasks.apply {
         register("publishToGooglePlayStore") {
