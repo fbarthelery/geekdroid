@@ -56,7 +56,7 @@ class PowerSaveModeFlowTest {
 
     @Test
     fun testThatWhenPowerSaveModeChangedEmitValue() = runTest {
-        isPowerSaveModeFlow(application, powerManager).test {
+        application.isPowerSaveModeFlow(powerManager).test {
             assertThat(awaitItem()).isFalse()
 
             shadowPowerManager.setIsPowerSaveMode(true)
