@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinAndroidPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinJsPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+import java.io.File
 import java.util.Locale
 
 internal fun Project.configureSourceLicenseChecker() {
@@ -47,6 +48,7 @@ internal fun Project.configureSourceLicenseChecker() {
     configure<LicenseExtension> {
         header = file("$rootDir/config/license/header.txt")
         mapping("java", "SLASHSTAR_STYLE")
+        mapping("json", "SLASHSTAR_STYLE")
         mapping("kt", "SLASHSTAR_STYLE")
 
         excludes(listOf("**/*.webp", "**/*.png"))
@@ -54,7 +56,7 @@ internal fun Project.configureSourceLicenseChecker() {
 
     // the LicensePlugin doesn't configure itself properly on DynamicFeaturePlugin
     // Copied the code to configure it
-    plugins.withType(DynamicFeaturePlugin::class.java) {
+    plugins.withType<DynamicFeaturePlugin> {
         configureAndroid()
     }
     // make the license tasks looks for kotlin files in an Android project
@@ -63,12 +65,17 @@ internal fun Project.configureSourceLicenseChecker() {
     }
 
     // make the license tasks for kotlin js project
-    plugins.withType(KotlinJsPluginWrapper::class.java) {
+    plugins.withType<KotlinJsPluginWrapper> {
         configureKotlin()
     }
 
-    plugins.withType(KotlinMultiplatformPluginWrapper::class.java) {
+    plugins.withType<KotlinMultiplatformPluginWrapper> {
         configureKotlin()
+        configureComposeResources()
+    }
+
+    tasks.withType<License>().configureEach {
+        notCompatibleWithConfigurationCache("License tasks calls getProject() at execution time")
     }
 }
 
@@ -117,6 +124,49 @@ private fun Project.configureKotlinAndroid() {
         }
     }
 }
+
+private fun Project.configureComposeResources() {
+    val kotlin = the<KotlinProjectExtension>()
+    val taskInfix = "ComposeResources"
+    kotlin.sourceSets.configureEach {
+        val kotlinSource = this
+        val sourceSetTaskName =
+            "${LicenseBasePlugin.getLICENSE_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
+        if (name.startsWith("generated")) {
+            logger.info("Skip sourceSet $name because it's generated code")
+            return@configureEach
+        }
+        val resourceDir = kotlinSource.resources.sourceDirectories.files.first()
+        val composeResourceDir = File(resourceDir, "../composeResources")
+
+        val configureLicenseCheckTaskLambda: LicenseCheck.() -> Unit = {
+            source(composeResourceDir)
+        }
+        if (sourceSetTaskName in tasks.names) {
+            // tasks may have already been added by configuration for the Android plugin
+            logger.info("Tasks $sourceSetTaskName already exists. configure it")
+            tasks.named(sourceSetTaskName, LicenseCheck::class.java, configureLicenseCheckTaskLambda)
+        } else {
+            logger.info("Adding ${project.name}:$sourceSetTaskName task for sourceSet ${kotlinSource.name}")
+            tasks.register(sourceSetTaskName, LicenseCheck::class.java, configureLicenseCheckTaskLambda)
+        }
+
+        val configureLicenseFormatTaskLambda: LicenseFormat.() -> Unit = {
+            source(composeResourceDir)
+        }
+        val sourceSetFormatTaskName =
+            "${LicenseBasePlugin.getFORMAT_TASK_BASE_NAME()}${taskInfix}${name.capitalize()}"
+        if (sourceSetFormatTaskName in tasks.names) {
+            // tasks may have already been added by configuration for the Android plugin
+            logger.info("Tasks $sourceSetFormatTaskName already exists. configure it")
+            tasks.named(sourceSetFormatTaskName, LicenseFormat::class.java, configureLicenseFormatTaskLambda)
+        } else {
+            logger.info("Adding ${project.name}:$sourceSetFormatTaskName task for sourceSet ${kotlinSource.name}")
+            tasks.register(sourceSetFormatTaskName, LicenseFormat::class.java, configureLicenseFormatTaskLambda)
+        }
+    }
+}
+
 
 
 private fun Project.configureAndroid() {
